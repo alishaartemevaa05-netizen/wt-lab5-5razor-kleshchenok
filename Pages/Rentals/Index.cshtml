@@ -1,0 +1,55 @@
+@page
+@model wt_lab5_5razor_kleshchenok.Pages.Rentals.IndexModel
+@{
+    ViewData["Title"] = "Аренды";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">📋 Аренды</h1>
+        <a asp-page="/Rentals/Create" class="btn btn-primary">➕ Оформить аренду</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th><th>Автомобиль</th><th>Клиент</th>
+                    <th>Начало</th><th>Окончание</th><th>Стоимость</th><th>Статус</th><th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model.Rentals)
+                {
+                    <tr>
+                        <td>@r.RentalId</td>
+                        <td>@r.CarName</td>
+                        <td>@r.CustomerName</td>
+                        <td>@r.StartDate.ToString("dd.MM.yyyy")</td>
+                        <td>@r.EndDate.ToString("dd.MM.yyyy")</td>
+                        <td>@r.TotalPrice.ToString("0.##") руб.</td>
+                        <td>
+                            @if (r.Status == wt_lab5_5razor_kleshchenok.Models.RentalStatus.Active)
+                            {
+                                <span class="badge bg-success">Активна</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Завершена</span>
+                            }
+                        </td>
+                        <td>
+                            @if (r.Status == wt_lab5_5razor_kleshchenok.Models.RentalStatus.Active)
+                            {
+                                <form method="post" asp-page-handler="Return" asp-route-id="@r.RentalId" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-primary">Принять авто</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+  </div>
+</div> 
